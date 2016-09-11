@@ -23,8 +23,8 @@
 #   DEALINGS IN THE SOFTWARE.
 #
 
-if(CORRADE_TARGET_EMSCRIPTEN)
-    set(OBJIMPORTER_TEST_DIR "")
+if(CORRADE_TARGET_EMSCRIPTEN OR CORRADE_TARGET_ANDROID)
+    set(OBJIMPORTER_TEST_DIR ".")
 else()
     set(OBJIMPORTER_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
@@ -32,9 +32,24 @@ endif()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/configure.h.cmake
                ${CMAKE_CURRENT_BINARY_DIR}/configure.h)
 
-corrade_add_test(ObjImporterTest Test.cpp LIBRARIES MagnumObjImporterTestLib)
+corrade_add_test(ObjImporterTest Test.cpp
+    LIBRARIES MagnumObjImporterTestLib
+    FILES
+        emptyFile.obj
+        keywords.obj
+        lineMesh.obj
+        missingData.obj
+        mixedPrimitives.obj
+        moreMeshes.obj
+        namedMesh.obj
+        normals.obj
+        optionalCoordinates.obj
+        pointMesh.obj
+        textureCoordinatesNormals.obj
+        textureCoordinates.obj
+        triangleMesh.obj
+        unnamedFirstMesh.obj
+        wrongIndexCount.obj
+        wrongNumberCount.obj
+        wrongNumbers.obj)
 target_include_directories(ObjImporterTest PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-
-if(CORRADE_TARGET_EMSCRIPTEN)
-    emscripten_embed_file(ObjImporterTest "" "/")
-endif()
